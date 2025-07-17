@@ -1,29 +1,9 @@
-# Copyright 2013-2023 Lawrence Livermore National Security, LLC and other
-# Spack Project Developers. See the top-level COPYRIGHT file for details.
-#
-# SPDX-License-Identifier: (Apache-2.0 OR MIT)
-
-# ----------------------------------------------------------------------------
-# If you submit this package back to Spack as a pull request,
-# please first remove this boilerplate and all FIXME comments.
-#
-# This is a template package file for Spack.  We've put "FIXME"
-# next to all the things you'll want to change. Once you've handled
-# them, you can save this file and test your package like this:
-#
-#     spack install otsdaq-fermitestbeam
-#
-# You can edit this file again by typing:
-#
-#     spack edit otsdaq-fermitestbeam
-#
-# See the Spack documentation for more information on packaging.
-# ----------------------------------------------------------------------------
-
 import os
 import sys
 
 from spack import *
+from spack.package import *
+
 
 def sanitize_environments(env, *vars):
     for var in vars:
@@ -33,29 +13,9 @@ def sanitize_environments(env, *vars):
 class OtsdaqFermilabtestbeam(CMakePackage):
     """The toolkit is used to control the Ph2_ACF for the CMS tracker project."""
 
-    # FIXME: Add a proper url for your package's homepage here.
     homepage = "https://github.com/andresfelquintero/otsdaq_fermilabtestbeam"
-    url = "https://github.com/andresfelquintero/otsdaq_fermilabtestbeam.git"
-    git = "https://github.com/andresfelquintero/otsdaq_fermilabtestbeam.git"
 
-
-#    homepage = "https://gitlab.cern.ch/otsdaq/otsdaq_fermilabtestbeam"
-#    url = "https://gitlab.cern.ch/otsdaq/otsdaq_fermilabtestbeam.git"
-#    git = "https://gitlab.cern.ch/otsdaq/otsdaq_fermilabtestbeam.git"
-
-    #Add a list of GitHub accounts to
-    # notify when the package is updated.
-    # maintainers("github_user1", "github_user2")
-
-    #Add the SPDX identifier of the project's license below.
-    # See https://spdx.org/licenses/ for a list.
-    license("UNKNOWN")
-
-    #Add proper versions and checksums here.
-    #Branches master and develop for this repository are exactly the same
-#    version('local', path='/home/aquinter/otsdaq/otsdaq_fermilabtestbeam')
-#    print(">>> DEBUG: Using custom package.py for otsdaq-fermilabtestbeam")
-
+    version("develop", preferred=True)
     version('master', branch='master', submodules=True, get_full_repo=True)
     version("latest", branch="master", submodules=True, get_full_repo=True)
     version("frozen", commit="b54ee85b5f5ebe1f3ca86d8365a93ed4d1e59ec9", submodules=True, get_full_repo=True)
@@ -72,19 +32,12 @@ class OtsdaqFermilabtestbeam(CMakePackage):
     depends_on("fhicl-cpp")
     depends_on("xerces-c")
     depends_on("messagefacility")
-#    depends on("otsdaq-suite")
-
-    #def cmake_args(self):
-    #    # FIXME: Add arguments other than
-    #    # FIXME: CMAKE_INSTALL_PREFIX and CMAKE_BUILD_TYPE
-    #    # FIXME: If not needed delete this function
-    #    args = []
-    #    return args
+    depends_on("artdaq-core")
+    depends_on("artdaq")
     
     def cmake_args(self):
         args = []
 
-    # Add dependencies that provide CMake config files via CMAKE_PREFIX_PATH
         deps = [
             "messagefacility",
             "fhicl-cpp",
